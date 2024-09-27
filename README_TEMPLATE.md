@@ -1,48 +1,48 @@
 # n8n-nodes-_node-name_
 
-This is an n8n community node. It lets you use _app/service name_ in your n8n workflows.
+這是一個 n8n 社區節點。它讓你在 n8n 工作流程中使用 _應用/服務名稱_。
 
-_App/service name_ is _one or two sentences describing the service this node integrates with_.
+_應用/服務名稱_ 是 _一到兩句描述此節點整合的服務_。
 
-[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
+[n8n](https://n8n.io/) 是一個 [公平代碼授權](https://docs.n8n.io/reference/license/) 的工作流程自動化平台。
 
-[Installation](#installation)  
-[Operations](#operations)  
-[Credentials](#credentials)  <!-- delete if no auth needed -->  
-[Compatibility](#compatibility)  
-[Usage](#usage)  <!-- delete if not using this section -->  
-[Resources](#resources)  
-[Version history](#version-history)  <!-- delete if not using this section -->  
+[安裝](#installation)  
+[操作](#operations)  
+[憑證](#credentials)  <!-- 如果不需要身份驗證，請刪除 -->  
+[相容性](#compatibility)  
+[使用](#usage)  <!-- 如果不使用此部分，請刪除 -->  
+[資源](#resources)  
+[版本歷史](#version-history)  <!-- 如果不使用此部分，請刪除 -->  
 
-## Installation
+## 安裝
 
-Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation.
+請遵循 n8n 社區節點文檔中的 [安裝指南](https://docs.n8n.io/integrations/community-nodes/installation/)。
 
-## Operations
+## 操作
 
-_List the operations supported by your node._
+_列出你的節點支持的操作。_
 
-## Credentials
+## 憑證
 
-_If users need to authenticate with the app/service, provide details here. You should include prerequisites (such as signing up with the service), available authentication methods, and how to set them up._
+_如果用戶需要與應用/服務進行身份驗證，請在此提供詳細信息。你應該包括先決條件（例如註冊服務）、可用的身份驗證方法以及如何設置它們。_
 
-## Compatibility
+## 相容性
 
-_State the minimum n8n version, as well as which versions you test against. You can also include any known version incompatibility issues._
+_說明最低 n8n 版本，以及你測試的版本。你還可以包括任何已知的版本不相容問題。_
 
-## Usage
+## 使用
 
-_This is an optional section. Use it to help users with any difficult or confusing aspects of the node._
+_這是一個可選部分。用來幫助用戶解決節點的任何困難或困惑的方面。_
 
-_By the time users are looking for community nodes, they probably already know n8n basics. But if you expect new users, you can link to the [Try it out](https://docs.n8n.io/try-it-out/) documentation to help them get started._
+_當用戶尋找社區節點時，他們可能已經了解 n8n 的基本知識。但如果你預期新用戶，可以鏈接到 [試用](https://docs.n8n.io/try-it-out/) 文檔以幫助他們入門。_
 
-## Resources
+## 資源
 
-* [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-* _Link to app/service documentation._
+* [n8n 社區節點文檔](https://docs.n8n.io/integrations/community-nodes/)
+* _鏈接到應用/服務文檔。_
 
-## Version history
+## 版本歷史
 
-_This is another optional section. If your node has multiple versions, include a short description of available versions and what changed, as well as any compatibility impact._
+_這是另一個可選部分。如果你的節點有多個版本，請包括可用版本的簡短描述以及變更內容，以及任何相容性影響。_
 
 
