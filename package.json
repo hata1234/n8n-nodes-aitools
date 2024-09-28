@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "n8n-nodes-chromadb",
   "version": "0.1.0",
   "description": "",
   "keywords": [
@@ -8,21 +8,15 @@
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "moris chao",
+    "email": "morischao@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/hata1234/n8n-nodes-chromadb.git"
   },
-  "engines": {
-    "node": ">=18.10",
-    "pnpm": ">=9.1"
-  },
-  "packageManager": "pnpm@9.1.4",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
@@ -35,25 +29,30 @@
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
-    ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/VectorStoreChroma/VectorStoreChroma.node.ts"
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "^7.15.0",
+    "@types/lodash": "^4.17.9",
+    "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^8.56.0",
-    "eslint-plugin-n8n-nodes-base": "^1.16.1",
-    "gulp": "^4.0.2",
-    "n8n-workflow": "*",
+    "eslint-plugin-n8n-nodes-base": "^1.16.2",
+    "gulp": "^5.0.0",
+    "n8n-workflow": "^1.48.0",
     "prettier": "^3.3.2",
     "typescript": "^5.5.3"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "@langchain/community": "^0.3.3",
+    "@langchain/core": "^0.3.3",
+    "@langchain/textsplitters": "^0.1.0",
+    "chromadb": "^1.9.2",
+    "langchain": "^0.3.2",
+    "lodash": "^4.17.21",
+    "tmp-promise": "^3.0.3"
   }
 }
