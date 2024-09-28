@@ -172,7 +172,7 @@ export const createVectorStoreNode = (args: VectorStoreNodeConstructorArgs) =>
 					name: 'mode',
 					type: 'options',
 					noDataExpression: true,
-					default: 'retrieve',
+					default: '',
 					options: getOperationModeOptions(args),
 				},
 				{

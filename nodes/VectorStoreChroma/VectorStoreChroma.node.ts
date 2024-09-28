@@ -12,14 +12,14 @@ const sharedFields: INodeProperties[] = [
 		type: 'string',
 		default: 'n8n_vectors',
 		required: true,
-		description: 'The name of the collection to store the vectors in.'
+		description: 'The name of the collection to store the vectors in'
 	},{
 		displayName: 'Chroma Base Url',
 		name: 'url',
 		type: 'string',
 		default: 'http://localhost:8000',
 		required: true,
-		description: 'The base url of the Chroma instance.'
+		description: 'The base URL of the Chroma instance'
 	}
 ]
 
@@ -30,6 +30,7 @@ export const VectorStoreChroma = createVectorStoreNode({
 		description: 'Work with your data in Chroma Vector Store',
 		icon: 'file:chroma.svg',
 		docsUrl: "https://js.langchain.com/v0.2/docs/integrations/vectorstores/chroma/",
+		operationModes: ['load', 'insert', 'retrieve', 'update'],
 	},
 	sharedFields,
 	async getVectorStoreClient(context, filter, embeddings, itemIndex) {
@@ -43,7 +44,7 @@ export const VectorStoreChroma = createVectorStoreNode({
 
 		return ChromaExtended.fromExistingCollection(embeddings, {
 			collectionName,
-			url,
+			url
 		});
 	},
 	async populateVectorStore(context, embeddings, documents, itemIndex) {
@@ -56,7 +57,7 @@ export const VectorStoreChroma = createVectorStoreNode({
 
 		ChromaExtended.fromDocuments(documents, embeddings, {
 			collectionName,
-			url,
+			url
 		});
 	}
 
