@@ -48,11 +48,41 @@ export class ToolSearXng implements INodeType {
 						default: 'en',
 					},
 					{
+						displayName: 'Locale',
+						name: 'locale',
+						type: 'string',
+						default: 'en',
+					},
+					{
 						displayName: 'Engine',
 						name: 'engines',
 						type: 'string',
 						default: 'google',
 					},
+					{
+						displayName: 'Safe Search',
+						name: 'safesearch',
+						type: 'options',
+						noDataExpression: true,
+						options: [
+							{
+								name: 'None',
+								value: 0,
+								type: 'number',
+							},
+							{
+								name: 'Moderate',
+								value: 1,
+								type: 'number',
+							},
+							{
+								name: 'Strict',
+								value: 2,
+								type: 'number',
+							},
+						],
+						default: 0,
+					}
 				],
 			}
 		],

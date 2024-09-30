@@ -19,7 +19,7 @@ import type { Embeddings } from '@langchain/core/embeddings';
 import type { Document } from '@langchain/core/documents';
 import { logWrapper } from '../utils/logWrapper';
 import { N8nJsonLoader } from '../utils/N8nJsonLoader';
-import type { App } from '../utils/N8nBinaryLoader';
+import type { N8nBinaryLoader } from '../utils/N8nBinaryLoader';
 import { getMetadataFiltersValues, logAiEvent } from '../utils/helpers';
 import { getConnectionHintNoticeField } from '../utils/sharedFields';
 import { processDocument } from './processDocuments';
@@ -172,7 +172,8 @@ export const createVectorStoreNode = (args: VectorStoreNodeConstructorArgs) =>
 					name: 'mode',
 					type: 'options',
 					noDataExpression: true,
-					default: '',
+					// eslint-disable-next-line n8n-nodes-base/node-param-default-wrong-for-options
+					default: 'retrieve',
 					options: getOperationModeOptions(args),
 				},
 				{
@@ -292,11 +293,11 @@ export const createVectorStoreNode = (args: VectorStoreNodeConstructorArgs) =>
 				const documentInput = (await this.getInputConnectionData(
 					NodeConnectionType.AiDocument,
 					0,
-				)) as N8nJsonLoader | App.N8nBinaryLoader | Array<Document<Record<string, unknown>>>;
-
+				)) as N8nJsonLoader | N8nBinaryLoader | Array<Document<Record<string, unknown>>>;
 				const resultData = [];
 				for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 					const itemData = items[itemIndex];
+					this.logger.info(itemIndex.toString());
 					const { processedDocuments, serializedDocuments } = await processDocument(
 						documentInput,
 						itemData,
@@ -306,7 +307,6 @@ export const createVectorStoreNode = (args: VectorStoreNodeConstructorArgs) =>
 
 					try {
 						await args.populateVectorStore(this, embeddings, processedDocuments, itemIndex);
-
 						void logAiEvent(this, 'ai-vector-store-populated');
 					} catch (error) {
 						throw error;

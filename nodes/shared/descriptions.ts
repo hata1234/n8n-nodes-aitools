@@ -1,8 +1,8 @@
 import type { INodeProperties } from 'n8n-workflow';
 
-export const chromaIndexRLC: INodeProperties = {
-	displayName: 'Chroma Index',
-	name: 'chromaIndex',
+export const chromaCollectionRLC: INodeProperties = {
+	displayName: 'Chroma Collection',
+	name: 'chromaCollection',
 	type: 'resourceLocator',
 	default: { mode: 'list', value: '' },
 	required: true,
@@ -12,7 +12,7 @@ export const chromaIndexRLC: INodeProperties = {
 			name: 'list',
 			type: 'list',
 			typeOptions: {
-				searchListMethod: 'chromaIndexSearch',
+				searchListMethod: 'chromaCollectionSearch',
 			},
 		},
 		{

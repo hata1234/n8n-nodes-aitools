@@ -89,66 +89,66 @@ const getAhref = (connectionType: { connection: string; locale: string }) =>
 		connectionType.connection,
 	)}'>${connectionType.locale}</a>`;
 
-export function getConnectionHintNoticeField(
-	connectionTypes: AllowedConnectionTypes[],
-): INodeProperties {
-	const groupedConnections = new Map<string, string[]>();
+	export function getConnectionHintNoticeField(
+		connectionTypes: AllowedConnectionTypes[],
+	): INodeProperties {
+		const groupedConnections = new Map<string, string[]>();
 
-	// group connection types by their 'connection' value
-	// to not create multiple links
-	connectionTypes.forEach((connectionType) => {
-		const connectionString = connectionsString[connectionType].connection;
-		const localeString = connectionsString[connectionType].locale;
+		// group connection types by their 'connection' value
+		// to not create multiple links
+		connectionTypes.forEach((connectionType) => {
+			const connectionString = connectionsString[connectionType].connection;
+			const localeString = connectionsString[connectionType].locale;
 
-		if (!groupedConnections.has(connectionString)) {
-			groupedConnections.set(connectionString, [localeString]);
-			return;
-		}
+			if (!groupedConnections.has(connectionString)) {
+				groupedConnections.set(connectionString, [localeString]);
+				return;
+			}
 
-		groupedConnections.get(connectionString)?.push(localeString);
-	});
-
-	let displayName;
-
-	if (groupedConnections.size === 1) {
-		const [[connection, locales]] = Array.from(groupedConnections);
-
-		displayName = `This node must be connected to ${determineArticle(locales[0])} ${locales[0]
-			.toLowerCase()
-			.replace(
-				/^ai /,
-				'AI ',
-			)}. <a data-action='openSelectiveNodeCreator' ${getConnectionParameterString(
-			connection,
-		)}>Insert one</a>`;
-	} else {
-		const ahrefs = Array.from(groupedConnections, ([connection, locales]) => {
-			// If there are multiple locales, join them with ' or '
-			// use determineArticle to insert the correct article
-			const locale =
-				locales.length > 1
-					? locales
-							.map((localeString, index, { length }) => {
-								return (
-									(index === 0 ? `${determineArticle(localeString)} ` : '') +
-									(index < length - 1 ? `${localeString} or ` : localeString)
-								);
-							})
-							.join('')
-					: `${determineArticle(locales[0])} ${locales[0]}`;
-			return getAhref({ connection, locale });
+			groupedConnections.get(connectionString)?.push(localeString);
 		});
 
-		displayName = `This node needs to be connected to ${ahrefs.join(' or ')}.`;
-	}
+		let displayName;
 
-	return {
-		displayName,
-		name: 'notice',
-		type: 'notice',
-		default: '',
-		typeOptions: {
-			containerClass: 'ndv-connection-hint-notice',
-		},
-	};
-}
+		if (groupedConnections.size === 1) {
+			const [[connection, locales]] = Array.from(groupedConnections);
+
+			displayName = `This node must be connected to ${determineArticle(locales[0])} ${locales[0]
+				.toLowerCase()
+				.replace(
+					/^ai /,
+					'AI ',
+				)}. <a data-action='openSelectiveNodeCreator' ${getConnectionParameterString(
+				connection,
+			)}>Insert one</a>`;
+		} else {
+			const ahrefs = Array.from(groupedConnections, ([connection, locales]) => {
+				// If there are multiple locales, join them with ' or '
+				// use determineArticle to insert the correct article
+				const locale =
+					locales.length > 1
+						? locales
+								.map((localeString, index, { length }) => {
+									return (
+										(index === 0 ? `${determineArticle(localeString)} ` : '') +
+										(index < length - 1 ? `${localeString} or ` : localeString)
+									);
+								})
+								.join('')
+						: `${determineArticle(locales[0])} ${locales[0]}`;
+				return getAhref({ connection, locale });
+			});
+
+			displayName = `This node needs to be connected to ${ahrefs.join(' or ')}.`;
+		}
+
+		return {
+			displayName,
+			name: 'notice',
+			type: 'notice',
+			default: '',
+			typeOptions: {
+				containerClass: 'ndv-connection-hint-notice',
+			},
+		};
+	}

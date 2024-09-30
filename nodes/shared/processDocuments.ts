@@ -1,15 +1,15 @@
 import type { Document } from '@langchain/core/documents';
 import type { INodeExecutionData } from 'n8n-workflow';
 import { N8nJsonLoader } from '../utils/N8nJsonLoader';
-import { App } from '../utils/N8nBinaryLoader';
+import { N8nBinaryLoader } from '../utils/N8nBinaryLoader';
 
 export async function processDocuments(
-	documentInput: N8nJsonLoader | App.N8nBinaryLoader | Array<Document<Record<string, unknown>>>,
+	documentInput: N8nJsonLoader | N8nBinaryLoader | Array<Document<Record<string, unknown>>>,
 	inputItems: INodeExecutionData[],
 ) {
 	let processedDocuments: Document[];
 
-	if (documentInput instanceof N8nJsonLoader || documentInput instanceof App.N8nBinaryLoader) {
+	if (documentInput instanceof N8nJsonLoader || documentInput instanceof N8nBinaryLoader) {
 		processedDocuments = await documentInput.processAll(inputItems);
 	} else {
 		processedDocuments = documentInput;
@@ -25,24 +25,35 @@ export async function processDocuments(
 	};
 }
 export async function processDocument(
-	documentInput: N8nJsonLoader | App.N8nBinaryLoader | Array<Document<Record<string, unknown>>>,
+	documentInput: N8nJsonLoader | N8nBinaryLoader | Array<Document<Record<string, unknown>>>,
 	inputItem: INodeExecutionData,
 	itemIndex: number,
 ) {
-	let processedDocuments: Document[];
+	let processedDocuments: Document[] | Document;
 
-	if (documentInput instanceof N8nJsonLoader || documentInput instanceof App.N8nBinaryLoader) {
+	if (documentInput instanceof N8nJsonLoader || documentInput instanceof N8nBinaryLoader) {
 		processedDocuments = await documentInput.processItem(inputItem, itemIndex);
 	} else {
 		processedDocuments = documentInput;
 	}
-
-	const serializedDocuments = processedDocuments.map(({ metadata, pageContent }) => ({
-		json: { metadata, pageContent },
-		pairedItem: {
-			item: itemIndex,
-		},
-	}));
+	let serializedDocuments: { json: { metadata: Record<string, unknown>; pageContent: string }; pairedItem: { item: number } }[] = [];
+	if(processedDocuments instanceof Array) {
+		serializedDocuments = processedDocuments.map(({ metadata, pageContent }) => ({
+			json: { metadata, pageContent },
+			pairedItem: {
+				item: itemIndex,
+			},
+		}));
+	}else{
+		serializedDocuments = [
+			{
+				json: { metadata: {}, pageContent: "" },
+				pairedItem: {
+					item: itemIndex,
+				},
+			},
+		];
+	}
 
 	return {
 		processedDocuments,
