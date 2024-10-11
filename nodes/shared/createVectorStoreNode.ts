@@ -19,10 +19,11 @@ import type { Embeddings } from '@langchain/core/embeddings';
 import type { Document } from '@langchain/core/documents';
 import { logWrapper } from '../utils/logWrapper';
 import { N8nJsonLoader } from '../utils/N8nJsonLoader';
-import type { N8nBinaryLoader } from '../utils/N8nBinaryLoader';
+import { N8nBinaryLoader } from '../utils/N8nBinaryLoader';
 import { getMetadataFiltersValues, logAiEvent } from '../utils/helpers';
 import { getConnectionHintNoticeField } from '../utils/sharedFields';
-import { processDocument } from './processDocuments';
+
+
 
 type NodeOperationMode = 'insert' | 'load' | 'retrieve' | 'update';
 
@@ -67,6 +68,31 @@ interface VectorStoreNodeConstructorArgs {
 		embeddings: Embeddings,
 		itemIndex: number,
 	) => Promise<VectorStore>;
+}
+
+
+async function processDocument(
+	context: IExecuteFunctions,
+	documentInput: N8nJsonLoader | N8nBinaryLoader ,
+	inputItem: INodeExecutionData,
+	itemIndex: number,
+) {
+	let processedDocuments: Document[] | Document;
+
+	processedDocuments = await documentInput.processItem(inputItem, itemIndex);
+
+	let serializedDocuments: { json: { metadata: Record<string, unknown>; pageContent: string }; pairedItem: { item: number } }[] = [];
+		serializedDocuments = processedDocuments.map(({ metadata, pageContent }) => ({
+			json: { metadata, pageContent },
+			pairedItem: {
+				item: itemIndex,
+			},
+		}));
+
+	return {
+		processedDocuments,
+		serializedDocuments,
+	};
 }
 
 function transformDescriptionForOperationMode(fields: INodeProperties[], mode: NodeOperationMode) {
@@ -293,12 +319,14 @@ export const createVectorStoreNode = (args: VectorStoreNodeConstructorArgs) =>
 				const documentInput = (await this.getInputConnectionData(
 					NodeConnectionType.AiDocument,
 					0,
-				)) as N8nJsonLoader | N8nBinaryLoader | Array<Document<Record<string, unknown>>>;
+				)) as N8nJsonLoader | N8nBinaryLoader;
 				const resultData = [];
 				for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 					const itemData = items[itemIndex];
 					this.logger.info(itemIndex.toString());
+
 					const { processedDocuments, serializedDocuments } = await processDocument(
+						this,
 						documentInput,
 						itemData,
 						itemIndex,
@@ -344,6 +372,7 @@ export const createVectorStoreNode = (args: VectorStoreNodeConstructorArgs) =>
 					);
 
 					const { processedDocuments, serializedDocuments } = await processDocument(
+						this,
 						loader,
 						itemData,
 						itemIndex,

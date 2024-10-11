@@ -25,17 +25,17 @@ export async function processDocuments(
 	};
 }
 export async function processDocument(
-	documentInput: N8nJsonLoader | N8nBinaryLoader | Array<Document<Record<string, unknown>>>,
+	documentInput: N8nJsonLoader | N8nBinaryLoader ,
 	inputItem: INodeExecutionData,
 	itemIndex: number,
 ) {
 	let processedDocuments: Document[] | Document;
 
-	if (documentInput instanceof N8nJsonLoader || documentInput instanceof N8nBinaryLoader) {
-		processedDocuments = await documentInput.processItem(inputItem, itemIndex);
-	} else {
-		processedDocuments = documentInput;
-	}
+	processedDocuments = await documentInput.processItem(inputItem, itemIndex);
+	// if (documentInput instanceof N8nJsonLoader || documentInput instanceof N8nBinaryLoader) {
+	// } else {
+	// 	processedDocuments = documentInput;
+	// }
 	let serializedDocuments: { json: { metadata: Record<string, unknown>; pageContent: string }; pairedItem: { item: number } }[] = [];
 	if(processedDocuments instanceof Array) {
 		serializedDocuments = processedDocuments.map(({ metadata, pageContent }) => ({

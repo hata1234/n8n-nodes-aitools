@@ -94,6 +94,7 @@ export class ToolSearXng implements INodeType {
 	async supplyData(this: IExecuteFunctions, itemIndex: number): Promise<SupplyData> {
 		const credentials = await this.getCredentials('searXNGApi');
 		const options = this.getNodeParameter('options', itemIndex) as object;
+
 		return {
 			response: logWrapper(new SearxngSearch({
 				apiBase: credentials.baseUrl+'',
